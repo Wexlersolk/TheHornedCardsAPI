@@ -6,12 +6,11 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/Wexler763/goCoffeApi/coffee-server/db"
-	"github.com/joho/godotenv"
-
+	"github.com/Wexler763/CoffeeApiSecond/coffee-server/db"
 	_ "github.com/jackc/pgconn"
+	_ "github.com/jackc/pgx/stdlib"
 	_ "github.com/jackc/pgx/v4"
-	_ "github.com/jackc/stdlib"
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
@@ -21,6 +20,7 @@ type Config struct {
 
 type Application struct {
 	Config Config
+	Models Models
 }
 
 func (app *Application) Serve() error {

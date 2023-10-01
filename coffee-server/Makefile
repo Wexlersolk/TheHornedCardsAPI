@@ -33,9 +33,9 @@ migrate_down:
 build:
 	if [ -f "${BINARY}" ]; then \
 		rm ${BINARY}; \
-		@echo "Deleted ${BINARY}"; \
+		echo "Deleted ${BINARY}"; \
 	fi
-	@echo "Building binary === "
+	echo "Building binary === "
 	go build -o ${BINARY} cmd/server/*.go
 
 run: build
