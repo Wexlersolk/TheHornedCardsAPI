@@ -5,78 +5,207 @@ import (
 	"time"
 )
 
-type Coffee struct {
-	ID        string    `json:"id"`
-	Name      string    `json:"name"`
-	Roast     string    `json:"roast"`
-	Image     string    `json:"image"`
-	Region    string    `json:"region"`
-	Price     float32   `json:"price"`
-	GrindUnit int16     `json:"grind_unit"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+type Card struct {
+	ID           string    `json:"id"`
+	Group_name   string    `json:"group_name"`
+	Card_hint    string    `json:"card_hint"`
+	Display_word string    `json:"display_word"`
+	Hidden_word  string    `json:"hidden_word"`
+	CreatedAt    time.Time `json:"created_at"`
+	UpdatedAt    time.Time `json:"updated_at"`
 }
 
-func (c *Coffee) GetAllCoffees() ([]*Coffee, error) {
+type Group struct {
+	ID         string `json:"id"`
+	Group_name string `json:"group_name"`
+	Group_info string `json:"group_info"`
+}
+
+func (c *Card) GetAllCards() ([]*Card, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `SELECT id, name, image, roast, region, price, gring_unit, created_at, updated_at FROM coffees`
+	query := `SELECT id, group_name, card_hint, display_word, hidden_word, created_at, updated_at FROM thehorned_cards_table`
 	rows, err := db.QueryContext(ctx, query)
 
 	if err != nil {
 		return nil, err
 	}
 
-	var coffees []*Coffee
+	var cards []*Card
 	for rows.Next() {
-		var coffee Coffee
+		var card Card
 		err := rows.Scan(
-			&coffee.ID,
-			&coffee.Name,
-			&coffee.Image,
-			&coffee.Roast,
-			&coffee.Region,
-			&coffee.Price,
-			&coffee.GrindUnit,
-			&coffee.CreatedAt,
-			&coffee.UpdatedAt,
+			&card.ID,
+			&card.Group_name, // Fixed: Missing group_name in the SELECT query
+			&card.Card_hint,  // Fixed: Missing card_hint in the SELECT query
+			&card.Display_word,
+			&card.Hidden_word,
+			&card.CreatedAt,
+			&card.UpdatedAt,
 		)
 
 		if err != nil {
 			return nil, err
 		}
-
-		coffees = append(coffees, &coffee)
+		cards = append(cards, &card)
 	}
 
-	return coffees, nil
+	return cards, nil
 }
+func (c *Card) GetCardById(id string) (*Card, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+	query := `
+        SELECT id, group_name, card_hint, display_word, hidden_word, created_at, updated_at 
+        FROM thehorned_cards_table
+        WHERE id = $1
+    `
+	var card Card
 
-func (c *Coffee) CreateCoffee(coffee Coffee) (*Coffee, error) {
+	row := db.QueryRowContext(ctx, query, id)
+	err := row.Scan(
+		&card.ID,
+		&card.Group_name,
+		&card.Card_hint,
+		&card.Display_word,
+		&card.Hidden_word,
+		&card.CreatedAt,
+		&card.UpdatedAt,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+	return &card, nil
+}
+func (c *Card) CreateCard(card Card) (*Card, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
 	query := `
-		INSERT INTO coffees (name, image, region, roast, price, grind_unit, created_at, updated_at)
-		VALUES($1, $2, $3, $4, $5, $6, $7, $8) return*	
-	`
-	_, err := db.ExecContext(
+        INSERT INTO thehorned_cards_table (group_name, card_hint, display_word, hidden_word, created_at, updated_at)
+        VALUES ($1, $2, $3, $4, $5, $6) returning *
+    `
+
+	err := db.QueryRowContext(
 		ctx,
 		query,
-		coffee.Name,
-		coffee.Image,
-		coffee.Roast,
-		coffee.Region,
-		coffee.Price,
-		coffee.GrindUnit,
+		card.Group_name,
+		card.Card_hint,
+		card.Display_word,
+		card.Hidden_word,
 		time.Now(),
 		time.Now(),
+	).Scan(
+		&card.ID,
+		&card.Group_name,
+		&card.Card_hint,
+		&card.Display_word,
+		&card.Hidden_word,
+		&card.CreatedAt,
+		&card.UpdatedAt,
 	)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &coffee, nil
+	return &card, nil
+}
+
+func (c *Card) UpdateCard(id string, body Card) (*Card, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := `
+        UPDATE thehorned_cards_table
+        SET
+            group_name = $2,
+            card_hint = $3,
+            display_word = $4,
+            hidden_word = $5,
+            updated_at = $6
+        WHERE id = $1
+        returning *
+    `
+
+	err := db.QueryRowContext(
+		ctx,
+		query,
+		id,
+		body.Group_name,
+		body.Card_hint,
+		body.Display_word,
+		body.Hidden_word,
+		time.Now(),
+	).Scan(
+		&body.ID,
+		&body.Group_name,
+		&body.Card_hint,
+		&body.Display_word,
+		&body.Hidden_word,
+		&body.CreatedAt,
+		&body.UpdatedAt,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &body, nil
+}
+
+func (c *Card) DeleteCard(id string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := `DELETE FROM thehorned_cards_table WHERE id = $1`
+	_, err := db.ExecContext(ctx, query, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *Card) DeleteAllCards() error {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	// Construct the DELETE query to remove all records
+	query := `DELETE FROM thehorned_cards_table`
+
+	_, err := db.ExecContext(ctx, query)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (g *Group) CreateGroup(group Group) (*Group, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := `
+        INSERT INTO thehorned_groups_table (group_name, group_info)
+        VALUES ($1, $2) returning *
+    `
+
+	err := db.QueryRowContext(
+		ctx,
+		query,
+		group.Group_name,
+		group.Group_info,
+	).Scan(
+		&group.ID,
+		&group.Group_name,
+		&group.Group_info,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &group, nil
 }

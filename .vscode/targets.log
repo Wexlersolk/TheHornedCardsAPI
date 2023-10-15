@@ -8,10 +8,12 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sat Sep 30 19:20:10 2023
+# Make data base, printed on Wed Oct 11 14:39:09 2023
 
 # Variables
 
+# environment
+FPS_BROWSER_APP_PROFILE_STRING = Internet Explorer
 # environment
 SYSTEMDRIVE = C:
 # environment
@@ -43,7 +45,9 @@ GOPATH = C:\Users\����\go
 # automatic
 @D = $(patsubst %/,%,$(patsubst %\,%,$(dir $@)))
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_12760_OOJRUOWEEOHTDZGS
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_11332_DEEPQJSIZUTDTHWY
+# environment
+FPS_BROWSER_USER_PROFILE_STRING = Default
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # default
@@ -53,10 +57,9 @@ VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # automatic
 ^D = $(patsubst %/,%,$(patsubst %\,%,$(dir $^)))
 # automatic
- 
 %F = $(notdir $%)
 # environment
-VSCODE_CODE_CACHE_PATH = C:\Users\����\AppData\Roaming\Code\CachedData\abd2f3db4bdb28f9e95536dfa84d8479f1eb312d
+VSCODE_CODE_CACHE_PATH = C:\Users\����\AppData\Roaming\Code\CachedData\e7e037083ff4455cf320e344325dacb480062c3c
 # environment
 SYS64COMPILATOR = 21d92a38a22qefcc691aa41887e1aec5
 # environment
@@ -74,7 +77,7 @@ MAKEFLAGS = pqrR
 # environment
 ONEDRIVE = C:\Users\����\OneDrive
 # makefile
-CURDIR := c:/Users/����/Desktop/GO/Coffe API second attempt
+CURDIR := c:/Users/����/Desktop/Kursova/Coffe API W
 # environment
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # automatic
@@ -94,7 +97,7 @@ MAKEFILE_LIST :=
 # automatic
 @F = $(notdir $@)
 # environment
-VSCODE_PID = 12760
+VSCODE_PID = 11332
 # automatic
 ?D = $(patsubst %/,%,$(patsubst %\,%,$(dir $?)))
 # automatic
@@ -190,7 +193,7 @@ ELECTRON_RUN_AS_NODE = 1
 # environment
 TEMP = C:\Users\8971~1\AppData\Local\Temp
 # environment
-VSCODE_IPC_HOOK = \\.\pipe\533cba87c729050fd841475aa6485c00-1.82.2-main-sock
+VSCODE_IPC_HOOK = \\.\pipe\533cba87c729050fd841475aa6485c00-1.83.0-main-sock
 # environment
 GOPROXY = https://proxy.golang.org,direct
 # default
@@ -204,14 +207,13 @@ ALLUSERSPROFILE = C:\ProgramData
 # environment
 SESSIONNAME = Console
 # default
-.FEATURES := target-spe 
-cific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs notintermediate shell-export archives jobserver output-sync load dospaths
+.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs notintermediate shell-export archives jobserver output-sync load dospaths
 # environment
 PROCESSOR_REVISION = 6001
 # environment
 PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 96 Stepping 1, AuthenticAMD
 # variable set hash-table stats:
-# Load=98/1024=10%, Rehash=0, Collisions=10/123=8%
+# Load=100/1024=10%, Rehash=0, Collisions=11/125=9%
 
 # Pattern-specific Variable Values
 
@@ -219,9 +221,9 @@ PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 96 Stepping 1, AuthenticAMD
 
 # Directories
 
-# . (key c:/Users/����/Desktop/GO/Coffe API second attempt, mtime 1696089119): 12 files, no impossibilities.
+# . (key c:/Users/����/Desktop/Kursova/Coffe API W, mtime 1696674998): 8 files, no impossibilities.
 
-# 12 files, no impossibilities in 1 directories.
+# 8 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -268,8 +270,7 @@ GNUmakefile:
 #  Implicit rule search has been done.
 #  File does not exist.
 #  File has been updated.
-#  Failed to be u 
-pdated.
+#  Failed to be updated.
 
 # files hash-table stats:
 # Load=7/1024=1%, Rehash=0, Collisions=0/17=0%
@@ -279,12 +280,12 @@ pdated.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 19 / storage = 166 B / avg = 8 B
-# current buf: size = 8174 B / used = 166 B / count = 19 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 15 / storage = 126 B / avg = 8 B
+# current buf: size = 8174 B / used = 126 B / count = 15 / avg = 8 B
 
-# strcache performance: lookups = 22 / hit rate = 13%
+# strcache performance: lookups = 18 / hit rate = 16%
 # hash-table stats:
-# Load=19/8192=0%, Rehash=0, Collisions=0/22=0%
-# Finished Make data base on Sat Sep 30 19:20:10 2023
+# Load=15/8192=0%, Rehash=0, Collisions=0/18=0%
+# Finished Make data base on Wed Oct 11 14:39:09 2023
 
  

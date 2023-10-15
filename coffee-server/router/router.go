@@ -9,11 +9,11 @@ import (
 	"github.com/go-chi/cors"
 )
 
-func Router() http.Handler {
+func Routes() http.Handler {
 	router := chi.NewRouter()
 	router.Use(middleware.Recoverer)
 	router.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"http://*", "http://*"},
+		AllowedOrigins:   []string{"*", "http://*", "https://*", "null"},
 		AllowedMethods:   []string{"GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		ExposedHeaders:   []string{"Link"},
@@ -21,8 +21,14 @@ func Router() http.Handler {
 		MaxAge:           300,
 	}))
 
-	router.Get("/api/v1/coffees", controllers.GetAllCoffees)
-	router.Post("/api/v1/coffees/{id}", controllers.CreateCoffee)
+	router.Get("/api/v1/cards", controllers.GetAllCards)
+	router.Get("/api/v1/cards/thehornedcard/{id}", controllers.GetCardById)
+	router.Post("/api/v1/cards/thehornedcard", controllers.CreateCard)
+	router.Put("/api/v1/cards/thehornedcard/{id}", controllers.UpdateCard)
+	router.Delete("/api/v1/cards/thehornedcard/{id}", controllers.DeleteCard)
+	router.Delete("/api/v1/coffees", controllers.DeleteAllCards)
+
+	router.Post("/api/v1/cards/groups/group", controllers.CreateGroup)
 
 	return router
 }

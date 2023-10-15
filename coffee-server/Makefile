@@ -25,10 +25,10 @@ create_migrations:
 	sqlx migrate add -r init
 
 make migrate_up:
-	sqlx migrate run --database-url postgres://Wexler:751751751@localhost:5432/coffee_db?sslmode=disable
+	sqlx migrate run --database-url postgres://Wexler:751751751@localhost:5432/thehorned_db?sslmode=disable
 
 migrate_down:
-	sqlx migrate revert --database-url postgres://Wexler:751751751@localhost:5432/coffee_db?sslmode=disable
+	sqlx migrate revert --database-url postgres://Wexler:751751751@localhost:5432/thehorned_db?sslmode=disable
 
 build:
 	if [ -f "${BINARY}" ]; then \

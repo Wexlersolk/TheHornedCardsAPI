@@ -7,6 +7,8 @@ import (
 	"os"
 
 	"github.com/Wexler763/CoffeeApiSecond/coffee-server/db"
+	"github.com/Wexler763/CoffeeApiSecond/coffee-server/router"
+	"github.com/Wexler763/CoffeeApiSecond/coffee-server/services"
 	_ "github.com/jackc/pgconn"
 	_ "github.com/jackc/pgx/stdlib"
 	_ "github.com/jackc/pgx/v4"
@@ -20,7 +22,7 @@ type Config struct {
 
 type Application struct {
 	Config Config
-	Models Models
+	Models services.Models
 }
 
 func (app *Application) Serve() error {
@@ -33,7 +35,8 @@ func (app *Application) Serve() error {
 
 	fmt.Println("Api is listening on port", port)
 	srv := &http.Server{
-		Addr: fmt.Sprintf(":%s", port),
+		Addr:    fmt.Sprintf(":%s", port),
+		Handler: router.Routes(),
 	}
 
 	return srv.ListenAndServe()
@@ -59,6 +62,7 @@ func main() {
 
 	app := &Application{
 		Config: cfg,
+		Models: services.New(dbConn.DB),
 	}
 
 	err = app.Serve()
