@@ -1,4 +1,4 @@
-module github.com/Wexler763/CoffeeApiSecond
+module github.com/Wexler763/TheHornedCardsAPI
 
 go 1.21.1
 

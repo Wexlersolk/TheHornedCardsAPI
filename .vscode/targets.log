@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed Oct 11 14:39:09 2023
+# Make data base, printed on Fri Oct 20 10:03:35 2023
 
 # Variables
 
@@ -45,7 +45,7 @@ GOPATH = C:\Users\����\go
 # automatic
 @D = $(patsubst %/,%,$(patsubst %\,%,$(dir $@)))
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_11332_DEEPQJSIZUTDTHWY
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_6064_WILCMDZJNBXNAMXM
 # environment
 FPS_BROWSER_USER_PROFILE_STRING = Default
 # environment
@@ -80,6 +80,8 @@ ONEDRIVE = C:\Users\����\OneDrive
 CURDIR := c:/Users/����/Desktop/Kursova/Coffe API W
 # environment
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# environment
+VSCODE_L10N_BUNDLE_LOCATION = 
 # automatic
 *D = $(patsubst %/,%,$(patsubst %\,%,$(dir $*)))
 # environment
@@ -97,7 +99,7 @@ MAKEFILE_LIST :=
 # automatic
 @F = $(notdir $@)
 # environment
-VSCODE_PID = 11332
+VSCODE_PID = 6064
 # automatic
 ?D = $(patsubst %/,%,$(patsubst %\,%,$(dir $?)))
 # automatic
@@ -213,7 +215,7 @@ PROCESSOR_REVISION = 6001
 # environment
 PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 96 Stepping 1, AuthenticAMD
 # variable set hash-table stats:
-# Load=100/1024=10%, Rehash=0, Collisions=11/125=9%
+# Load=101/1024=10%, Rehash=0, Collisions=12/126=10%
 
 # Pattern-specific Variable Values
 
@@ -286,6 +288,6 @@ GNUmakefile:
 # strcache performance: lookups = 18 / hit rate = 16%
 # hash-table stats:
 # Load=15/8192=0%, Rehash=0, Collisions=0/18=0%
-# Finished Make data base on Wed Oct 11 14:39:09 2023
+# Finished Make data base on Fri Oct 20 10:03:35 2023
 
  
