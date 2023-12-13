@@ -5,16 +5,15 @@ import (
 )
 
 type Group struct {
-	ID         string `json:"id"`
+	ID         int    `json:"group_id"`
 	Group_name string `json:"group_name"`
-	Group_info string `json:"group_info"`
 }
 
 func (g *Group) GetAllGroups() ([]*Group, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `SELECT id, group_name, group_info FROM thehorned_groups_table`
+	query := `SELECT group_id, group_name FROM thehorned_groups_table`
 	rows, err := db.QueryContext(ctx, query)
 
 	if err != nil {
@@ -27,7 +26,6 @@ func (g *Group) GetAllGroups() ([]*Group, error) {
 		err := rows.Scan(
 			&group.ID,
 			&group.Group_name,
-			&group.Group_info,
 		)
 
 		if err != nil {
@@ -44,19 +42,17 @@ func (g *Group) CreateGroup(group Group) (*Group, error) {
 	defer cancel()
 
 	query := `
-			INSERT INTO thehorned_groups_table (group_name, group_info)
-			VALUES ($1, $2) returning *
+			INSERT INTO thehorned_groups_table (group_name)
+			VALUES ($1) returning group_id, group_name
 		`
 
 	err := db.QueryRowContext(
 		ctx,
 		query,
 		group.Group_name,
-		group.Group_info,
 	).Scan(
 		&group.ID,
 		&group.Group_name,
-		&group.Group_info,
 	)
 
 	if err != nil {
@@ -70,7 +66,7 @@ func (g *Group) DeleteGroupById(id string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `DELETE FROM thehorned_groups_table WHERE id = $1`
+	query := `DELETE FROM thehorned_groups_table WHERE group_id = $1`
 	_, err := db.ExecContext(ctx, query, id)
 	if err != nil {
 		return err
@@ -102,4 +98,33 @@ func (g *Group) DeleteAllGroups() error {
 	}
 
 	return nil
+}
+
+func (g *Group) GetAllCardsFromGroup(groupID int) ([]string, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := `
+		SELECT card_id
+		FROM thehorned_cards_table
+		WHERE group_id = $1
+	`
+
+	rows, err := db.QueryContext(ctx, query, groupID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var cardIDs []string
+	for rows.Next() {
+		var cardID string
+		err := rows.Scan(&cardID)
+		if err != nil {
+			return nil, err
+		}
+		cardIDs = append(cardIDs, cardID)
+	}
+
+	return cardIDs, nil
 }

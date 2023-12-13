@@ -1,1 +1,0 @@
-DROP TABLE IF EXISTS thehorned_groups_table;

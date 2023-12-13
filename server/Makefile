@@ -24,7 +24,7 @@ stop_container:
 create_migrations:
 	sqlx migrate add -r init
 
-make migrate_up:
+migrate_up:
 	sqlx migrate run --database-url postgres://Wexler:751751751@localhost:5432/thehorned_db?sslmode=disable
 
 migrate_down:

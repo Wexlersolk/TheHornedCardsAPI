@@ -6,8 +6,8 @@ import (
 )
 
 type Card struct {
-	ID           string    `json:"id"`
-	Group_name   string    `json:"group_name"`
+	ID           string    `json:"card_id"`
+	Group_id     int       `json:"group_id"`
 	Card_hint    string    `json:"card_hint"`
 	Display_word string    `json:"display_word"`
 	Hidden_word  string    `json:"hidden_word"`
@@ -19,7 +19,7 @@ func (c *Card) GetAllCards() ([]*Card, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `SELECT id, group_name, card_hint, display_word, hidden_word, created_at, updated_at FROM thehorned_cards_table`
+	query := `SELECT card_id, group_id, card_hint, display_word, hidden_word, created_at, updated_at FROM thehorned_cards_table`
 	rows, err := db.QueryContext(ctx, query)
 
 	if err != nil {
@@ -31,8 +31,8 @@ func (c *Card) GetAllCards() ([]*Card, error) {
 		var card Card
 		err := rows.Scan(
 			&card.ID,
-			&card.Group_name, // Fixed: Missing group_name in the SELECT query
-			&card.Card_hint,  // Fixed: Missing card_hint in the SELECT query
+			&card.Group_id,
+			&card.Card_hint,
 			&card.Display_word,
 			&card.Hidden_word,
 			&card.CreatedAt,
@@ -51,7 +51,7 @@ func (c *Card) GetCardById(id string) (*Card, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 	query := `
-        SELECT id, group_name, card_hint, display_word, hidden_word, created_at, updated_at 
+        SELECT card_id, group_id, card_hint, display_word, hidden_word, created_at, updated_at 
         FROM thehorned_cards_table
         WHERE id = $1
     `
@@ -60,7 +60,7 @@ func (c *Card) GetCardById(id string) (*Card, error) {
 	row := db.QueryRowContext(ctx, query, id)
 	err := row.Scan(
 		&card.ID,
-		&card.Group_name,
+		&card.Group_id,
 		&card.Card_hint,
 		&card.Display_word,
 		&card.Hidden_word,
@@ -78,14 +78,14 @@ func (c *Card) CreateCard(card Card) (*Card, error) {
 	defer cancel()
 
 	query := `
-        INSERT INTO thehorned_cards_table (group_name, card_hint, display_word, hidden_word, created_at, updated_at)
+        INSERT INTO thehorned_cards_table (group_id, card_hint, display_word, hidden_word, created_at, updated_at)
         VALUES ($1, $2, $3, $4, $5, $6) returning *
     `
 
 	err := db.QueryRowContext(
 		ctx,
 		query,
-		card.Group_name,
+		card.Group_id,
 		card.Card_hint,
 		card.Display_word,
 		card.Hidden_word,
@@ -93,7 +93,7 @@ func (c *Card) CreateCard(card Card) (*Card, error) {
 		time.Now(),
 	).Scan(
 		&card.ID,
-		&card.Group_name,
+		&card.Group_id,
 		&card.Card_hint,
 		&card.Display_word,
 		&card.Hidden_word,
@@ -115,7 +115,7 @@ func (c *Card) UpdateCard(id string, body Card) (*Card, error) {
 	query := `
         UPDATE thehorned_cards_table
         SET
-            group_name = $2,
+            group_id = $2,
             card_hint = $3,
             display_word = $4,
             hidden_word = $5,
@@ -128,14 +128,14 @@ func (c *Card) UpdateCard(id string, body Card) (*Card, error) {
 		ctx,
 		query,
 		id,
-		body.Group_name,
+		body.Group_id,
 		body.Card_hint,
 		body.Display_word,
 		body.Hidden_word,
 		time.Now(),
 	).Scan(
 		&body.ID,
-		&body.Group_name,
+		&body.Group_id,
 		&body.Card_hint,
 		&body.Display_word,
 		&body.Hidden_word,
@@ -154,7 +154,7 @@ func (c *Card) DeleteCard(id string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `DELETE FROM thehorned_cards_table WHERE id = $1`
+	query := `DELETE FROM thehorned_cards_table WHERE card_id = $1`
 	_, err := db.ExecContext(ctx, query, id)
 	if err != nil {
 		return err

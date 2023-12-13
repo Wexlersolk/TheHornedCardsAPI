@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/Wexler763/TheHornedCardsAPI/coffee-server/controllers"
+	"github.com/Wexler763/TheHornedCardsAPI/server/controllers"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
@@ -31,6 +32,7 @@ func Routes() http.Handler {
 
 	//GROUPS
 	router.Get("/api/v1/groups", controllers.GetAllGroups)
+	router.Get("/api/v1/groups/getallcards/{id}", controllers.GetAllCardsFromGroup)
 	router.Post("/api/v1/groups/group", controllers.CreateGroup)
 	router.Delete("/api/v1/groups/group/{id}", controllers.DeleteGroupById)
 	router.Delete("/api/v1/groups/{group_name}", controllers.DeleteGroupByName)

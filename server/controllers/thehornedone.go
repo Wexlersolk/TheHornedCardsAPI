@@ -142,3 +142,12 @@ func DeleteAllGroups(w http.ResponseWriter, r *http.Request) {
 	}
 	helpers.WriteJSON(w, http.StatusOK, helpers.Envelope{"message": "All cards groups"})
 }
+
+func GetAllCardsFromGroup(w http.ResponseWriter, r *http.Request) {
+	all, err := group.GetAllGroups()
+	if err != nil {
+		helpers.MessageLogs.ErrorLog.Println(err)
+		return
+	}
+	helpers.WriteJSON(w, http.StatusOK, helpers.Envelope{all})
+}
